@@ -18,13 +18,15 @@ import {
   Loader2,
 } from 'lucide-react';
 import Globe from '@/components/Globe';
-import { predictWeather } from '@/lib/weatherApi';
+import { predictWeather, WeatherPrediction } from '@/lib/weatherApi';
+import WeatherChart from '@/components/WeatherChart';
+import { downloadCsv } from '@/lib/utils';
 
 export default function Index() {
   const [quickLocation, setQuickLocation] = useState('');
   const [quickDate, setQuickDate] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [prediction, setPrediction] = useState<{prediction: string, fun_fact: string} | null>(null);
+  const [prediction, setPrediction] = useState<WeatherPrediction | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleGetPrediction = async () => {
@@ -148,6 +150,14 @@ export default function Index() {
                   <div className="space-y-4">
                     <p className="text-lg text-white">{prediction.prediction}</p>
                     <p className="text-md text-slate-300">{prediction.fun_fact}</p>
+                    <WeatherChart data={prediction.raw_data} />
+                    <Button
+                      size="lg"
+                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/25"
+                      onClick={() => downloadCsv(prediction.raw_data, quickLocation)}
+                    >
+                      Download CSV
+                    </Button>
                   </div>
                 ) : (
                   <>
@@ -217,7 +227,7 @@ export default function Index() {
                   </div>
                 </div>
 
-                <Button
+                {!prediction && <Button
                   size="lg"
                   className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/25"
                   onClick={handleGetPrediction}
@@ -235,7 +245,7 @@ export default function Index() {
                       <ArrowRight className="w-5 h-5 ml-2" />
                     </>
                   )}
-                </Button>
+                </Button>}
               </div>
             </CardContent>
           </Card>
