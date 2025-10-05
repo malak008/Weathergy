@@ -192,19 +192,27 @@ export default function Index() {
                   <div className="grid grid-cols-2 gap-2 text-xs">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="text-slate-400">Raspberry Pi</span>
+                      <span className="text-slate-400">DHT11: Temp & Humidity</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="text-slate-400">Arduino Nano</span>
+                      <span className="text-slate-400">LDR: Sun & Light</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="text-slate-400">LM35 Sensor</span>
+                      <span className="text-slate-400">Wind Direction</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="text-slate-400">DHT22 Sensor</span>
+                      <span className="text-slate-400">Wind Meter</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                      <span className="text-slate-400">ESP32</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
+                      <span className="text-slate-400">Flask API Backend</span>
                     </div>
                   </div>
                 </div>
@@ -280,23 +288,23 @@ export default function Index() {
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-slate-300">Raspberry Pi 4</span>
+                    <span className="text-slate-300">DHT11: Temp & Humidity</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-slate-300">Arduino Nano</span>
+                    <span className="text-slate-300">LDR: Sun & Light</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-slate-300">LM35 Temperature</span>
+                    <span className="text-slate-300">Wind Direction</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-slate-300">DHT22 Humidity</span>
+                    <span className="text-slate-300">Wind Meter</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                    <span className="text-slate-300">NodeMCU ESP8266</span>
+                    <span className="text-slate-300">ESP32</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse"></div>
