@@ -125,7 +125,7 @@ export default function Index() {
 
               {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <Card className="bg-slate-900/80 border-green-500/30 w-full max-w-md m-4">
+          <Card className="bg-slate-900/80 border-green-500/30 w-full max-w-4xl m-4">
             <CardContent className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-white font-semibold text-lg flex items-center gap-2">

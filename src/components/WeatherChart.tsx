@@ -42,14 +42,14 @@ const WeatherChart: React.FC<WeatherChartProps> = ({ data }) => {
   const chartData = processDataForChart(data);
 
   return (
-    <div className="space-y-8 mt-4">
-      <div style={{ width: '100%', height: 200 }}>
-        <h3 className="text-white text-center mb-2">Temperature</h3>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div className="w-full h-48">
+        <h3 className="text-white text-center mb-2 text-sm">Temperature (°C)</h3>
         <ResponsiveContainer>
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#4A5568" />
             <XAxis dataKey="date" stroke="#A0AEC0" tick={{ fontSize: 10 }} />
-            <YAxis stroke="#A0AEC0" />
+            <YAxis stroke="#A0AEC0" tick={{ fontSize: 10 }}/>
             <Tooltip
               contentStyle={{ backgroundColor: '#1A202C', border: '1px solid #2D3748' }}
               labelStyle={{ color: '#E2E8F0' }}
@@ -58,13 +58,13 @@ const WeatherChart: React.FC<WeatherChartProps> = ({ data }) => {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <div style={{ width: '100%', height: 200 }}>
-      <h3 className="text-white text-center mb-2">Humidity</h3>
+      <div className="w-full h-48">
+        <h3 className="text-white text-center mb-2 text-sm">Humidity (%)</h3>
         <ResponsiveContainer>
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#4A5568" />
             <XAxis dataKey="date" stroke="#A0AEC0" tick={{ fontSize: 10 }} />
-            <YAxis stroke="#A0AEC0" />
+            <YAxis stroke="#A0AEC0" tick={{ fontSize: 10 }}/>
             <Tooltip
               contentStyle={{ backgroundColor: '#1A202C', border: '1px solid #2D3748' }}
               labelStyle={{ color: '#E2E8F0' }}
@@ -73,13 +73,13 @@ const WeatherChart: React.FC<WeatherChartProps> = ({ data }) => {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <div style={{ width: '100%', height: 200 }}>
-      <h3 className="text-white text-center mb-2">Pressure</h3>
+      <div className="w-full h-48">
+        <h3 className="text-white text-center mb-2 text-sm">Pressure (hPa)</h3>
         <ResponsiveContainer>
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#4A5568" />
             <XAxis dataKey="date" stroke="#A0AEC0" tick={{ fontSize: 10 }} />
-            <YAxis stroke="#A0AEC0" domain={['dataMin - 2', 'dataMax + 2']} />
+            <YAxis stroke="#A0AEC0" domain={['dataMin - 2', 'dataMax + 2']} tick={{ fontSize: 10 }}/>
             <Tooltip
               contentStyle={{ backgroundColor: '#1A202C', border: '1px solid #2D3748' }}
               labelStyle={{ color: '#E2E8F0' }}
@@ -88,13 +88,13 @@ const WeatherChart: React.FC<WeatherChartProps> = ({ data }) => {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <div style={{ width: '100%', height: 200 }}>
-      <h3 className="text-white text-center mb-2">Rain Probability</h3>
+      <div className="w-full h-48">
+        <h3 className="text-white text-center mb-2 text-sm">Rain Probability (%)</h3>
         <ResponsiveContainer>
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#4A5568" />
             <XAxis dataKey="date" stroke="#A0AEC0" tick={{ fontSize: 10 }} />
-            <YAxis stroke="#A0AEC0" />
+            <YAxis stroke="#A0AEC0" tick={{ fontSize: 10 }}/>
             <Tooltip
               contentStyle={{ backgroundColor: '#1A202C', border: '1px solid #2D3748' }}
               labelStyle={{ color: '#E2E8F0' }}
