@@ -75,7 +75,7 @@ export default function Index() {
         <div className="flex-1 grid lg:grid-cols-2 gap-8 p-6">
           {/* Left Side - Interactive Globe */}
           <div className="flex flex-col justify-center">
-            <div className="h-96 lg:h-[500px] relative bg-gradient-to-b from-transparent via-blue-950/20 to-transparent rounded-2xl overflow-hidden">
+            <div className="h-96 lg:h-[715px] relative bg-gradient-to-b from-transparent via-blue-950/20 to-transparent rounded-2xl overflow-hidden">
               <Globe />
               
               {/* Globe Info Overlay */}
@@ -151,13 +151,23 @@ export default function Index() {
                     <p className="text-lg text-white">{prediction.prediction}</p>
                     <p className="text-md text-slate-300">{prediction.fun_fact}</p>
                     <WeatherChart data={prediction.raw_data} />
-                    <Button
-                      size="lg"
-                      className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/25"
-                      onClick={() => downloadCsv(prediction.raw_data, quickLocation)}
-                    >
-                      Download CSV
-                    </Button>
+                    <div className="mt-6 flex flex-col sm:flex-row gap-4">
+                      <Button
+                        size="lg"
+                        className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-blue-500/25"
+                        onClick={() => downloadCsv(prediction.raw_data, quickLocation)}
+                      >
+                        Download CSV
+                      </Button>
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="w-full border-slate-500 text-slate-300 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-colors"
+                        onClick={() => setPrediction(null)}
+                      >
+                        Predict Again
+                      </Button>
+                    </div>
                   </div>
                 ) : (
                   <>
