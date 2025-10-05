@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Search, MapPin, Calendar, Loader2 } from 'lucide-react';
+import { ArrowLeft, Search, MapPin, Calendar, Loader2, Sun } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import WeatherCard from '@/components/WeatherCard';
 import { predictWeather, WeatherPrediction } from '@/lib/weatherApi';
@@ -11,7 +11,7 @@ import { predictWeather, WeatherPrediction } from '@/lib/weatherApi';
 export default function WeatherQuery() {
   const [location, setLocation] = useState('');
   const [date, setDate] = useState('');
-  const [prediction, setPrediction] = useState<WeatherPrediction | null>(null);
+  const [prediction, setPrediction] = useState<{prediction: string, fun_fact: string} | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,7 +20,7 @@ export default function WeatherQuery() {
 
     setLoading(true);
     try {
-      const result = await predictWeather(location, new Date(date));
+      const result = await predictWeather(location);
       setPrediction(result);
     } catch (error) {
       console.error('Error predicting weather:', error);
@@ -82,7 +82,7 @@ export default function WeatherQuery() {
                   </Label>
                   <Input
                     id="date"
-                    type="datetime-local"
+                    type="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     className="bg-slate-800/50 border-slate-600 text-white"
@@ -136,40 +136,28 @@ export default function WeatherQuery() {
 
           {/* Results */}
           <div className="space-y-6">
-            {prediction && (
-              <WeatherCard
-                location={prediction.location}
-                date={prediction.date}
-                conditions={prediction.conditions}
-              />
-            )}
-
-            {prediction?.sensorData && (
+            {loading && (
               <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-blue-400 text-lg">Live Sensor Data</CardTitle>
+                  <CardTitle className="text-green-400 flex items-center gap-2">
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Analyzing Conditions...
+                  </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-3 gap-4">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-orange-400">
-                        {prediction.sensorData.temperature.toFixed(1)}°C
-                      </div>
-                      <div className="text-sm text-slate-400">Temperature</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-cyan-400">
-                        {prediction.sensorData.humidity.toFixed(1)}%
-                      </div>
-                      <div className="text-sm text-slate-400">Humidity</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-400">
-                        {prediction.sensorData.pressure.toFixed(1)}
-                      </div>
-                      <div className="text-sm text-slate-400">Pressure (hPa)</div>
-                    </div>
-                  </div>
+              </Card>
+            )}
+            {prediction && (
+              <Card className="bg-slate-900/50 border-slate-700/50 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-green-400 flex items-center gap-2">
+                    <Sun className="w-5 h-5" />
+                    Weather Prediction for {location}
+                  </CardTitle>
+                  <p className="text-slate-400 text-sm">{date}</p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-lg text-white">{prediction.prediction}</p>
+                  <p className="text-md text-slate-300">{prediction.fun_fact}</p>
                 </CardContent>
               </Card>
             )}

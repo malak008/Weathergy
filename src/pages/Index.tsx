@@ -13,13 +13,32 @@ import {
   ArrowRight,
   Satellite,
   Activity,
-  Search
+  Search,
+  X,
+  Loader2,
 } from 'lucide-react';
 import Globe from '@/components/Globe';
+import { predictWeather } from '@/lib/weatherApi';
 
 export default function Index() {
   const [quickLocation, setQuickLocation] = useState('');
   const [quickDate, setQuickDate] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [prediction, setPrediction] = useState<{prediction: string, fun_fact: string} | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleGetPrediction = async () => {
+    if (!quickLocation) return;
+    setLoading(true);
+    try {
+      const result = await predictWeather(quickLocation);
+      setPrediction(result);
+    } catch (error) {
+      console.error('Error predicting weather:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 overflow-hidden">
@@ -39,7 +58,7 @@ export default function Index() {
                 <Satellite className="w-7 h-7 text-white animate-pulse" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">WeatherSphere</h1>
+                <h1 className="text-2xl font-bold text-white">Weathergy</h1>
                 <p className="text-sm text-slate-400">AI-Powered Weather Prediction</p>
               </div>
             </div>
@@ -92,56 +111,128 @@ export default function Index() {
                 </p>
               </div>
 
-              {/* Quick Weather Check Form */}
-              <Card className="bg-slate-900/70 border-green-500/30 backdrop-blur-sm">
-                <CardContent className="p-6">
-                  <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                    <Search className="w-5 h-5 text-green-400" />
-                    Quick Weather Check
-                  </h3>
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="quick-location" className="text-slate-300 flex items-center gap-1">
-                          <MapPin className="w-4 h-4" />
-                          Location
-                        </Label>
-                        <Input
-                          id="quick-location"
-                          type="text"
-                          placeholder="Enter city name"
-                          value={quickLocation}
-                          onChange={(e) => setQuickLocation(e.target.value)}
-                          className="bg-slate-800/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-green-500 focus:ring-green-500/20"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="quick-date" className="text-slate-300 flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
-                          Date
-                        </Label>
-                        <Input
-                          id="quick-date"
-                          type="date"
-                          value={quickDate}
-                          onChange={(e) => setQuickDate(e.target.value)}
-                          className="bg-slate-800/50 border-slate-600 text-white focus:border-green-500 focus:ring-green-500/20"
-                        />
-                      </div>
-                    </div>
-                    <Link to="/weather" state={{ location: quickLocation, date: quickDate }}>
-                      <Button 
-                        size="lg" 
-                        className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/25"
-                      >
-                        <Search className="w-5 h-5 mr-2" />
-                        Get Weather Prediction
-                        <ArrowRight className="w-5 h-5 ml-2" />
-                      </Button>
-                    </Link>
+              <Button
+                size="lg"
+                className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/25"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <Search className="w-5 h-5 mr-2" />
+                Get Weather Prediction
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+
+              {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <Card className="bg-slate-900/80 border-green-500/30 w-full max-w-md m-4">
+            <CardContent className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-white font-semibold text-lg flex items-center gap-2">
+                  <Search className="w-5 h-5 text-green-400" />
+                  Quick Weather Check
+                </h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-slate-400 hover:text-white"
+                >
+                  <X className="w-5 h-5" />
+                </Button>
+              </div>
+              <div className="space-y-4">
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <Loader2 className="w-8 h-8 animate-spin text-green-400" />
                   </div>
-                </CardContent>
-              </Card>
+                ) : prediction ? (
+                  <div className="space-y-4">
+                    <p className="text-lg text-white">{prediction.prediction}</p>
+                    <p className="text-md text-slate-300">{prediction.fun_fact}</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="space-y-2">
+                      <Label
+                        htmlFor="quick-location"
+                        className="text-slate-300 flex items-center gap-1"
+                      >
+                        <MapPin className="w-4 h-4" />
+                        Location
+                      </Label>
+                      <Input
+                        id="quick-location"
+                        type="text"
+                        placeholder="Enter city name"
+                        value={quickLocation}
+                        onChange={(e) => setQuickLocation(e.target.value)}
+                        className="bg-slate-800/50 border-slate-600 text-white placeholder:text-slate-400 focus:border-green-500 focus:ring-green-500/20"
+                      />
+                    </div>
+                    <div className="space-y-2 border-b border-slate-700 pb-4">
+                      <Label
+                        htmlFor="quick-date"
+                        className="text-slate-300 flex items-center gap-1"
+                      >
+                        <Calendar className="w-4 h-4" />
+                        Date
+                      </Label>
+                      <Input
+                        id="quick-date"
+                        type="date"
+                        value={quickDate}
+                        onChange={(e) => setQuickDate(e.target.value)}
+                        className="bg-slate-800/50 border-slate-600 text-white focus:border-green-500 focus:ring-green-500/20"
+                      />
+                    </div>
+                  </>
+                )}
+
+                <div className="mt-6 p-4 bg-slate-800/30 rounded-lg border border-slate-700/30 border-b border-slate-700 pb-4">
+                  <h3 className="text-sm font-medium text-slate-300 mb-2">Hardware Status</h3>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-slate-400">Raspberry Pi</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-slate-400">Arduino Nano</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-slate-400">LM35 Sensor</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="text-slate-400">DHT22 Sensor</span>
+                    </div>
+                  </div>
+                </div>
+
+                <Button
+                  size="lg"
+                  className="w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg shadow-green-500/25"
+                  onClick={handleGetPrediction}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Analyzing...
+                    </>
+                  ) : (
+                    <>
+                      <Search className="w-5 h-5 mr-2" />
+                      Get Weather Prediction
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </>
+                  )}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
               {/* Feature Cards */}
               <div className="grid grid-cols-2 gap-4">
